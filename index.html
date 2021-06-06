@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet" />
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
+    <!-- MDB -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.5.0/mdb.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="animation.css">
+    <title>👾Monster Slayer</title>
+</head>
+
+<body>
+    <header class="bg-dark py-3">
+        <h2 class="m-0 text-center text-white">Monster Slayer</h2>
+    </header>
+    <section id="game">
+        <div class="container">
+            <!-- Health bars -->
+            <div class="d-flex flex-column flex-md-row mt-4">
+                <section class="card shadow w-100 me-md-4" :class="animation" @animationend="animation = false">
+                    <div class="card-body">
+                        <h4 class="text-center">Monster health</h4>
+                        <div id="monsterHealth" class="border border-dark rounded-2 ">
+                            <div class="d-flex justify-content-center align-items-center" :class="healthBarColorMonster"
+                                style="
+                                height: 2rem;" :style="styleMonsterHealth">
+                                <span class="text-white">{{ monsterHealth }}%</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <section class="card shadow w-100 mt-4 mt-md-0" :class="animation" @animationend="animation = false">
+                    <div class="card-body">
+                        <h4 class="text-center">Your health</h4>
+                        <div id="playerHealth" class="border border-dark rounded">
+                            <div class="d-flex justify-content-center align-items-center" :class="healthBarColorPlayer"
+                                style="height: 2rem" :style="stylePlayerHealth">
+                                <span class="text-white">{{ playerHealth }}%</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <!-- Winner -->
+            <section class="card shadow rounded mt-4" v-if="winner">
+                <div class="card-body text-center">
+                    <h4 class="my-3">{{ winner }}</h4>
+                    <button class="btn btn-primary mx-auto" @click="startNewGame">New Game</button>
+                </div>
+            </section>
+            <!-- Controls -->
+            <div class="mt-4 d-flex flex-wrap justify-content-md-center" v-else>
+                <div>
+                    <button class="btn btn-danger m-2" @click="attackMonster">Attack</button>
+                    <button class="btn btn-secondary m-2" :disabled="countRound" @click="specialAttack">Special
+                        attack</button>
+                </div>
+                <div>
+                    <button class="btn btn-success m-2" @click="healPlayer">Heal</button>
+                    <button class="btn btn-warning m-2" @click="surrender">Surrender</button>
+                </div>
+            </div>
+            <!-- Batte log -->
+            <ul class="list-group list-group-flush mt-4 shadow rounded show-battle-log" v-if="logMessages.length">
+                <h3 class="ps-3 pt-3">Battle log</h3>
+                <li class="list-group-item" v-for="logMessage in logMessages">
+                    <p class="m-0">
+                        <span class="me-1" :class="logMessage.madeBy === 'Player' ? 'text-primary' : 'text-secondary'">
+                            {{logMessage.madeBy}}
+                        </span>
+                        <span class="me-1"
+                            :class="logMessage.spell === 'Attack'  || logMessage.spell === 'Special Attack'? 'text-danger' : 'text-success'">
+                            {{logMessage.spell}}
+                        </span>
+                        <span>{{logMessage.dmg}}</span>
+                    </p>
+                </li>
+            </ul>
+        </div>
+    </section>
+    <!-- MDB -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.5.0/mdb.min.js"></script>
+    <!-- Vue -->
+    <script src="https://unpkg.com/vue@next"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>
